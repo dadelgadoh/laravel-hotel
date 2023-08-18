@@ -18,4 +18,14 @@ class HotelRoomType extends Model
     {
         return $this->belongsTo(Hotel::class);
     }
+
+    public function roomType()
+    {
+        return $this->hasOne(RoomType::class);
+    }
+
+    public function accommodation()
+    {
+        return $this->hasOne(Accommodation::class);
+    }
 }

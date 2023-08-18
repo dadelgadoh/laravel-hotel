@@ -24,11 +24,11 @@ class StoreHotelRequest extends FormRequest
     {
         // 'name', 'address', 'city', 'nit', 'no_rooms'
         return [
-            'name'=> ['required'],
-            'address'=> ['required'],
-            'city'=> ['required'],
-            'nit'=> ['required', Rule::unique('hotels')->ignore($this->hotel)],
-            'no_rooms'=> ['required'],
+            'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'nit' => ['required|string|regex:/^\d{9}-\d$/', Rule::unique('hotels')->ignore($this->hotel)],
+            'no_rooms' => 'required|integer|min:1',
         ];
     }
 }
