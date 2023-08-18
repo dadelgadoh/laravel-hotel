@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Rules\HotelCapacityCheck;
-use Illuminate\Validation\Rule;
+use App\Rules\UniqueHotelRoomType;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Log;
 
 class StoreHotelRoomTypeRequest extends FormRequest
 {
@@ -24,25 +23,11 @@ class StoreHotelRoomTypeRequest extends FormRequest
      */
     public function rules(): array
     {
-        // Log::info('Valor de la variable hotel room:', ['hotel room' => $this]);
-
         return [
-            'hotel_id' => ['required', 'integer', 'exists:hotels,id'],
+            'hotel_id' => ['required', 'integer', 'exists:hotels,id',new UniqueHotelRoomType($this)],
             'room_type_id' => ['required', 'integer', 'exists:room_types,id'],
-            'accommodation_id' => ['required', 'integer', 'exists:accommodations,id',  Rule::unique('hotel_room_types')->where(function ($query) {
-                return $query->where('hotel_id', $this->hotel_id)
-                    ->where('room_type_id', $this->room_type_id)
-                    ->where('accommodation_id', $this->accommodation_id);
-            })->ignore($this->hotel_room)],
-            // 'quantity' => ['required','integer','min:0', new HotelCapacityCheck($this->hotel_id)]
+            'accommodation_id' => ['required', 'integer', 'exists:accommodations,id'],
             'quantity' => ['required', 'integer', 'min:0', new HotelCapacityCheck($this)]
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'accommodation_id.unique' => 'Room configuration quantity already exists.',
         ];
     }
 }
