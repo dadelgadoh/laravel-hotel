@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreHotelRequest extends FormRequest
+class StoreHotelRoomTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,13 +21,12 @@ class StoreHotelRequest extends FormRequest
      */
     public function rules(): array
     {
-        // 'name', 'address', 'city', 'nit', 'no_rooms'
+        // hotel_id 'room_type_id', 'accommodation_id', 'quantity'
         return [
-            'name'=> ['required'],
-            'address'=> ['required'],
-            'city'=> ['required'],
-            'nit'=> ['required', Rule::unique('hotels')->ignore($this->hotel)],
-            'no_rooms'=> ['required'],
+            'hotel_id'=> ['required'],
+            'room_type_id'=> ['required'],
+            'accommodation_id'=> ['required'],
+            'quantity'=> ['required']
         ];
     }
 }
