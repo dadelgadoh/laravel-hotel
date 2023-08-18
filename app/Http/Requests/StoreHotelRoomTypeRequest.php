@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\AccommodationRule;
 use App\Rules\HotelCapacityCheck;
 use App\Rules\UniqueHotelRoomType;
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,9 +25,9 @@ class StoreHotelRoomTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'hotel_id' => ['required', 'integer', 'exists:hotels,id',new UniqueHotelRoomType($this)],
+            'hotel_id' => ['required', 'integer', 'exists:hotels,id', new UniqueHotelRoomType($this)],
             'room_type_id' => ['required', 'integer', 'exists:room_types,id'],
-            'accommodation_id' => ['required', 'integer', 'exists:accommodations,id'],
+            'accommodation_id' => ['required', 'integer', 'exists:accommodations,id', new AccommodationRule($this->room_type_id)],
             'quantity' => ['required', 'integer', 'min:0', new HotelCapacityCheck($this)]
         ];
     }

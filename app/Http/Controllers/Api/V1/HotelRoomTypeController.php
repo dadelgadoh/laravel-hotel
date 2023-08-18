@@ -32,7 +32,7 @@ class HotelRoomTypeController extends Controller
     public function update(StoreHotelRoomTypeRequest $request, HotelRoomType $hotel_room)
     {
         $hotel_room->update($request->validated());
-        return response()->json("Hotel Updated");
+        return response()->json("Hotel room quantity Updated");
     }
 
     public function destroy(HotelRoomType $hotel_room)

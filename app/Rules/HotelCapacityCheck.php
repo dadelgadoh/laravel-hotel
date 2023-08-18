@@ -22,6 +22,7 @@ class HotelCapacityCheck implements ValidationRule
     }
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        // return;
         $hotel_room_type_req = $this->hotel_room_type_req;
         $hotel_id = $hotel_room_type_req->hotel_id;
         try {
