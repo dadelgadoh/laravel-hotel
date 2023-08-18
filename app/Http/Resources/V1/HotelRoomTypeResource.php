@@ -15,12 +15,12 @@ class HotelRoomTypeResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'=>$this->id,
-            'hotel_id'=>$this->id,
-            'room_type_id'=>$this->id,
-            'accommodation_id'=>$this->id,
-            'quantity'=>$this->quantity,
-            'url'=> route('hotel-rooms.show', $this->id)
+            'id' => $this->id,
+            'hotel_id' => $this->hotel_id,
+            'room_type_id' => $this->room_type_id,
+            'accommodation_id' => $this->accommodation_id,
+            'quantity' => $this->quantity,
+            'url' => route('hotel-rooms.show', $this->id)
         ];
     }
 }

@@ -21,9 +21,10 @@ class HotelController extends Controller
     }
 
     public function show(Hotel $hotel)
-    {
+    {info('Objeto hotel:', ['data' => $hotel]);
         return new HotelResource($hotel);
     }
+
     public function store(StoreHotelRequest $request)
     {
         Hotel::create($request->validated());

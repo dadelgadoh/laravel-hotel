@@ -18,14 +18,6 @@ return new class extends Migration
             $table->string('city');
             $table->string('nit');
             $table->integer('no_rooms');
-            $table->text('room_type')->nullable();;
-            $table->text('accommodation')->nullable();;
-            // $table->enum('room_type', ['Standard', 'Junior', 'Suite']);
-            // $table->enum('accommodation', ['Single', 'Double', 'Triple', 'Quadruple']);
-            // // Agregar restricciones CHECK para tipos de habitación y acomodaciones
-            // $table->checkConstraint('room_type IN (\'Standard\', \'Junior\', \'Suite\')');
-            // $table->checkConstraint('accommodation IN (\'Single\', \'Double\', \'Triple\', \'Quadruple\')');
-
 
             $table->timestamps();
         });

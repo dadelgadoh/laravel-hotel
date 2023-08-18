@@ -14,29 +14,30 @@ class HotelRoomTypeController extends Controller
     public function index()
     {
         // return response()->json("Hotel Room quantity Index");
+        // return HotelRoomTypeResource::collection(HotelRoomType::all());
         return new HotelRoomTypeCollection(HotelRoomType::all());
     }
-
-    
-    public function show(HotelRoomType $hotel_room_type)
+ 
+    public function show(HotelRoomType $hotel_room)
     {
-        return new HotelRoomTypeResource($hotel_room_type);
+        return new HotelRoomTypeResource($hotel_room);
     }
+
     public function store(StoreHotelRoomTypeRequest $request)
     {
         HotelRoomType::create($request->validated());
         return response()->json("Hotel room quantity Created");
     }
 
-    public function update(StoreHotelRoomTypeRequest $request, HotelRoomType $hotel_room_type)
+    public function update(StoreHotelRoomTypeRequest $request, HotelRoomType $hotel_room)
     {
-        $hotel_room_type->update($request->validated());
+        $hotel_room->update($request->validated());
         return response()->json("Hotel Updated");
     }
 
-    public function destroy(HotelRoomType $hotel_room_type)
+    public function destroy(HotelRoomType $hotel_room)
     {
-        $hotel_room_type->delete();
+        $hotel_room->delete();
         return response()->json("Hotel room quantity Deleted");
     }
 }

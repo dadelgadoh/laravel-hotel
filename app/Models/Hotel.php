@@ -10,7 +10,7 @@ class Hotel extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'address', 'city', 'nit', 'no_rooms', 'room_type', 'accommodation'
+        'name', 'address', 'city', 'nit', 'no_rooms'
     ];
 
     public function hotelRoomTypes()

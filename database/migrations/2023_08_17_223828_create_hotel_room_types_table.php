@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('hotel_room_types', function (Blueprint $table) {
             $table->id();
-
             $table->unsignedBigInteger('hotel_id');
             $table->unsignedBigInteger('room_type_id');
             $table->unsignedBigInteger('accommodation_id');
+ 
             $table->integer('quantity');
             
             // Definir las claves foráneas
