@@ -15,7 +15,7 @@ class HotelTest extends TestCase
 
     // use  WithFaker;
 
-    public function testIndex()
+    public function testIndexOfHotels()
     {
         $numInsertions = 5;
         for ($i = 0; $i < $numInsertions; $i++) {
@@ -48,10 +48,10 @@ class HotelTest extends TestCase
         ]);
 
         $data = json_decode($response->getContent(), true)['data'];
-        $this->assertCount(5, $data);
+        $this->assertCount($numInsertions, $data);
     }
 
-    public function testShow()
+    public function testShowSpecificHotel()
     {
         $numInsertions = 5;
 
@@ -123,15 +123,70 @@ class HotelTest extends TestCase
         }
     }
 
-    // public function testDestroy()
-    // {
-    //     $hotel = factory(Hotel::class)->create();
+    public function testDeleteAnHotel()
+    {
+        $numInsertions = 5;
 
-    //     $response = $this->delete('/api/hotels/' . $hotel->id);
+        for ($i = 0; $i < $numInsertions; $i++) {
+            $hotel = $this->createTestHotel();
+            $data = [
+                'name' => $hotel->name,
+                'address' => $hotel->address,
+                'city' => $hotel->city,
+                'nit' => $hotel->nit,
+                'no_rooms' => $hotel->no_rooms,
+            ];
+            $this->storeHotel($data);
 
-    //     $response->assertStatus(200); 
-    //     $this->assertDatabaseMissing('hotels', ['id' => $hotel->id]); 
+            $response = $this->delete('/api/v1/hotels/' . $hotel->id);
+
+            $this->assertTrue($response->status() === 200 || $response->status() === 404);
+            $this->assertDatabaseMissing('hotels', ['id' => $hotel->id]); 
+        }
+    }
+
+    // public function testResourseRandom(){
+    //     $numInsertions = 5;
+
+    //     for ($i = 0; $i < $numInsertions; $i++) {
+    //         $hotel = $this->createTestHotel();
+    //         $data = [
+    //             'name' => $hotel->name,
+    //             'address' => $hotel->address,
+    //             'city' => $hotel->city,
+    //             'nit' => $hotel->nit,
+    //             'no_rooms' => $hotel->no_rooms,
+    //         ];
+    //         $this->storeHotel($data);
+
+    //         $random_string = $this->faker->randomAscii;
+    //         $response = $this->get('/api/v1/hotels/' . $random_string);
+
+    //         $this->assertTrue($response->status() === 200 || $response->status() === 404);
+    //     }
+
     // }
+
+    // public function testCreatingResourceRandomlyValues() {
+    //     $numInsertions = 5;
+
+    //     for ($i = 0; $i < $numInsertions; $i++) {
+    //         $data = [
+    //             'name' => $this->faker->randomAscii,
+    //             'address' => $this->faker->randomAscii,
+    //             'city' => $this->faker->randomAscii,
+    //             'nit' => $this->faker->randomAscii,
+    //             'no_rooms' => $this->faker->randomAscii,
+    //         ];
+
+    //         $response = $this->storeHotel($data);
+    //         $this->assertTrue($response->status() === 200 || $response->status() === 302);
+    //         // $response->assertStatus(200);
+    //         $this->assertDatabaseHas('hotels', $data); // Verificar que se haya creado en la base de datos
+    //     }
+    // }
+
+    
     private function createTestHotel()
     {
         return Hotel::create([
@@ -142,7 +197,6 @@ class HotelTest extends TestCase
             'no_rooms' => $this->faker->numberBetween(10, 100),
         ]);
     }
-
     private function updateHotel($id, $data)
     {
         return $this->put('/api/v1/hotels/' . $id, $data);
