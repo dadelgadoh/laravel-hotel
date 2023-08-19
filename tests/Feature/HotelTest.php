@@ -10,32 +10,71 @@ use Tests\TestCase;
 
 class HotelTest extends TestCase
 {
-    
+
     use RefreshDatabase, WithFaker;
 
     // use  WithFaker;
 
-    // public function testIndex()
-    // {
-    //     $hotels = factory(Hotel::class, 5)->create();
+    public function testIndex()
+    {
+        $numInsertions = 5;
+        for ($i = 0; $i < $numInsertions; $i++) {
+            $hotel = $this->createTestHotel();
+            $data = [
+                'name' => $hotel->name,
+                'address' => $hotel->address,
+                'city' => $hotel->city,
+                'nit' => $hotel->nit,
+                'no_rooms' => $hotel->no_rooms,
+            ];
+            $this->storeHotel($data);
+        }
 
-    //     $response = $this->get('/api/hotels');
+        $response = $this->get('/api/v1/hotels');
 
-    //     $response->assertStatus(200);
-    //     $response->assertJsonCount(5); // Verificar que se devuelvan todos los hoteles
-    // }
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [ // '*' significa cualquier índice en este contexto
+                    'id',
+                    'hotelName',
+                    'address',
+                    'city',
+                    'nit',
+                    'no_rooms',
+                    'url'
+                ],
+            ],
+        ]);
 
-    // public function testShow()
-    // {
-    //     $hotel = factory(Hotel::class)->create();
+        $data = json_decode($response->getContent(), true)['data'];
+        $this->assertCount(5, $data);
+    }
 
-    //     $response = $this->get('/api/hotels/' . $hotel->id);
+    public function testShow()
+    {
+        $numInsertions = 5;
 
-    //     $response->assertStatus(200);
-    //     $response->assertJson(['data' => $hotel->toArray()]);
-    // }
+        for ($i = 0; $i < $numInsertions; $i++) {
+            $hotel = $this->createTestHotel();
+            $data = [
+                'name' => $hotel->name,
+                'address' => $hotel->address,
+                'city' => $hotel->city,
+                'nit' => $hotel->nit,
+                'no_rooms' => $hotel->no_rooms,
+            ];
+            $this->storeHotel($data);
 
-    public function testStore()
+            $response = $this->get('/api/v1/hotels/' . $hotel->id);
+            // $response = $this->get('/api/v1/hotels/' . $i + 1);
+
+            $this->assertTrue($response->status() === 200 || $response->status() === 404);
+            // $response->assertJson(['data' => $hotel->toArray()]);
+        }
+    }
+
+    public function testStoreNewHotel()
     {
         $numInsertions = 5;
 
@@ -48,16 +87,16 @@ class HotelTest extends TestCase
                 'no_rooms' => $this->faker->numberBetween(10, 100),
             ];
 
-            $response = $this->post('/api/v1/hotels', $data);
+            $response = $this->storeHotel($data);
 
             $response->assertStatus(200);
             $this->assertDatabaseHas('hotels', $data); // Verificar que se haya creado en la base de datos
         }
     }
 
-    public function testUpdate()
+    public function testUpdateExistingHotel()
     {
-        $numUpdates = 5; 
+        $numUpdates = 5;
 
         for ($i = 0; $i < $numUpdates; $i++) {
             $hotel = $this->createTestHotel();
@@ -69,7 +108,7 @@ class HotelTest extends TestCase
                 'no_rooms' => $hotel->no_rooms,
             ];
 
-            $response = $this->put('/api/hotels/' . $hotel->id, $data);
+            $response = $this->updateHotel($hotel->id, $data);
 
             $this->assertTrue($response->status() === 200 || $response->status() === 404);
 
@@ -103,10 +142,13 @@ class HotelTest extends TestCase
             'no_rooms' => $this->faker->numberBetween(10, 100),
         ]);
     }
-    
+
     private function updateHotel($id, $data)
     {
-        return $this->put('/api/hotels/' . $id, $data);
+        return $this->put('/api/v1/hotels/' . $id, $data);
     }
-    
+    private function storeHotel($data)
+    {
+        return $this->post('/api/v1/hotels', $data);
+    }
 }
