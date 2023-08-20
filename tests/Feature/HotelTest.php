@@ -37,7 +37,7 @@ class HotelTest extends TestCase
             'data' => [
                 '*' => [ // '*' significa cualquier índice en este contexto
                     'id',
-                    'hotelName',
+                    'name',
                     'address',
                     'city',
                     'nit',
