@@ -14,15 +14,14 @@ class HotelResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-
         return [
-            'id'=>$this->id,
-            'hotelName'=>$this->name,
-            'address'=>$this->address,
-            'city'=>$this->city,
-            'nit'=>$this->nit,
-            'no_rooms'=>$this->no_rooms,
-            'url'=> route('hotels.show', $this->id)
+            'id' => $this->id,
+            'name' => $this->name,
+            'address' => $this->address,
+            'city' => $this->city,
+            'nit' => $this->nit,
+            'no_rooms' => $this->no_rooms,
+            'url' => route('hotels.show', $this->id)
         ];
     }
 }

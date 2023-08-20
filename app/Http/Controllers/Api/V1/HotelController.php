@@ -13,15 +13,11 @@ class HotelController extends Controller
 {
     public function index()
     {
-        // return response()->json("Hotel Index");
-        // return HotelResource::collection(Hotel::all());
-        // return HotelResource::collection(Hotel::paginate(2));
-        // return new HotelCollection(Hotel::paginate(2));
         return new HotelCollection(Hotel::all());
     }
 
     public function show(Hotel $hotel)
-    {info('Objeto hotel:', ['data' => $hotel]);
+    {
         return new HotelResource($hotel);
     }
 
